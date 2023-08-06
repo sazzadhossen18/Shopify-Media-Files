@@ -1,0 +1,24 @@
+{% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+      <div class="product-image">
+        <img src="{{ media | img_url: '100x100'}}" alt="{{ media.alt }}">
+       </div>
+    {% when 'external_video' %}
+      <div class="product-single__media">
+        {{ media | external_video_tag }}
+      </div>
+    {% when 'video' %}
+      <div class="product-single__video">
+        {{ media | video_tag: controls: true }}
+      </div>
+    {% when 'model' %}
+      <div class="product-single__media">
+        {{ media | model_viewer_tag }}
+      </div>
+    {% else %}
+      <div class="product-single__media">
+        {{ media | media_tag }}
+      </div>
+  {% endcase %}
+{% endfor %}
