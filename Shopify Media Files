@@ -22,3 +22,296 @@
       </div>
   {% endcase %}
 {% endfor %}
+
+
+
+<!DOCTYPE html>
+<!-- Design by foolishdeveloper.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pure javascript image zoom </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style media="screen">
+   .zoom {
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.zoom img:hover {
+  opacity: 0;
+}
+.zoom img {
+  transition: opacity 0.5s;
+  display: block;
+  width: 100%;
+}
+
+ .embed-container {
+    position: relative;
+    padding-bottom: 122.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}  
+
+.embed-container video, .embed-container object, .embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.embed-container video img, .embed-container object, .embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.fa-play-circle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+  .embed-container i {
+    font-size: 30px;
+}        
+  </style>
+  <title>Document</title>
+</head>
+<body>
+
+
+   <div class="main-image-slider slider-for">
+
+   {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+ 
+      <div class="zoom" onmousemove="zoom(event)" style="background-image: url({{ media | img_url: 'master'}})">
+  <img src="{{ media | img_url: 'master'}}" alt="{{ media.alt }}">
+</div>
+    {% when 'external_video' %}
+      <div class="product-single__media">
+        <div class="embed-container">
+        {{ media | external_video_tag }}
+    
+        </div>
+      </div>
+    {% when 'video' %}
+      <div class="product-single__video">
+        <div class="embed-container">
+        {{ media | video_tag: controls: true }}
+    
+      </div>
+      </div>
+    {% when 'model' %}
+      <div class="product-single__media">
+        {{ media | model_viewer_tag }}
+      </div>
+    {% else %}
+      <div class="product-single__media">
+        {{ media | media_tag }}
+      </div>
+  {% endcase %}
+{% endfor %}
+   
+  
+  
+   
+ </div>
+  
+
+ <div class="thubnail-image-slider slider-nav">
+
+
+  {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+  <div class="mail-image">
+     <img src="{{ media | img_url: 'master'}}" alt="{{ media.alt }}">
+   </div>
+    {% when 'external_video' %}
+      <div class="product-single__media">
+        <div class="embed-container">
+        {{ media | external_video_tag }}
+    <i class="fa fa-play-circle" aria-hidden="true"></i>
+        </div>
+      </div>
+    {% when 'video' %}
+      <div class="product-single__video">
+        <div class="embed-container">
+       <img src="{{ media.preview_image | img_url: 'master'}}" alt="{{ media.alt }}">
+      <i  class="fa fa-play-circle" aria-hidden="true"></i>
+           
+      </div>
+      </div>
+    {% when 'model' %}
+      <div class="product-single__media">
+     <img src="{{ media.preview_image | img_url: 'master'}}" alt="{{ media.alt }}">
+      
+      </div>
+    {% else %}
+      <div class="product-single__media">
+        {{ media | media_tag }}
+      </div>
+  {% endcase %}
+{% endfor %}
+
+ 
+   </div>
+
+
+
+  
+<script type="text/javascript">
+function zoom(e){
+  var zoomer = e.currentTarget;
+  e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+  e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+  x = offsetX/zoomer.offsetWidth*100
+  y = offsetY/zoomer.offsetHeight*100
+  zoomer.style.backgroundPosition = x + '% ' + y + '%';
+}
+</script>
+</body>
+</html>
+
+
+
+<style>
+
+.main-image-slider.slider-for  .slick-arrow {
+ 
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    line-height: 30px;
+    font-size: 0px!important;
+ 
+}
+  
+.main-image-slider.slider-for button.slick-prev.slick-arrow {
+    opacity: 1!important;
+}
+
+.main-image-slider.slider-for  button.slick-next.slick-arrow {
+ opacity: 1!important;
+  background:transparent;
+}
+.main-image-slider.slider-for button.slick-prev.slick-arrow {
+    opacity: 1!important;
+    background: transparent;
+ 
+}
+.main-image-slider.slider-for .slick-prev {
+    left: 3px;
+}
+
+.main-image-slider.slider-for .slick-next {
+    right: 3px;
+}
+
+.main-image-slider.slider-for button.slick-arrow {
+    margin-top: 0px;
+} 
+.main-image-slider.slider-for .slick-arrow:before, .slick-arrow:after {
+    font-size: 30px!important;
+}
+
+.main-image-slider.slider-for .slick-slide img {
+    border-radius: 0!important;
+}
+
+.thubnail-image-slider.slider-nav .slick-slide img {
+    border-radius: 0!important;
+}
+.thubnail-image-slider.slider-nav.slick-initialized.slick-slider {
+    margin-top: 20px;
+}
+.thubnail-image-slider.slider-nav .mail-image.slick-slide img{
+    border-radius: 0;
+  width: 93%;
+}
+.embed-container img{
+      border-radius: 0;
+  width: 93%;
+     position: absolute;
+  z-index:-1;
+}
+.thubnail-image-slider.slider-nav   .mail-image.slick-slide.slick-current img{
+      border: 1px solid #000;
+    padding: 2px;
+}
+
+
+</style>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+
+
+
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+<script>
+ $('.slider-for').slick({
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: false,
+  fade: false,
+  asNavFor: '.slider-nav'
+});
+$('.slider-nav').slick({
+  slidesToShow: 6,
+  slidesToScroll: 1,
+  asNavFor: '.slider-for',
+  dots: false,
+   arrows: false,
+  focusOnSelect: true
+});
+	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
